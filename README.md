@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ecommerce-microservices-kafka-docker-kubernetes
 
 ## 📌 Overview
@@ -13,4 +14,5 @@ A demo microservices-based application built using Spring Boot, Apache Kafka, Do
 - Docker
 - Kubernetes (Minikube)
 - MySQL / PostgreSQL
+
 
