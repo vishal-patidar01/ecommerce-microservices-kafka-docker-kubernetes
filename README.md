@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # ecommerce-microservices-kafka-docker-kubernetes
 
 ## 📌 Overview

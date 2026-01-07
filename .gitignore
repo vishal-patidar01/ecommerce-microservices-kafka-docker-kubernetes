@@ -20,3 +20,6 @@
 
 # Allow example configs
 !**/application-example.yml
+# macOS
+.DS_Store
+**/.DS_Store
