@@ -25,7 +25,7 @@ public class ProductController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getInventoryById(@RequestBody Long id) {
+    public ResponseEntity<ProductDto> getInventoryById(@PathVariable Long id) {
         ProductDto inventory = productService.getProductById(id);
         return ResponseEntity.ok(inventory);
     }
