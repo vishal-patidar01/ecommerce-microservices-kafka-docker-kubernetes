@@ -1,0 +1,22 @@
+# Build artifacts
+**/target/
+**/build/
+
+# IDE files
+**/.idea/
+**/.vscode/
+**/*.iml
+
+# Logs
+**/*.log
+
+# Environment files
+.env
+**/*.env
+
+# Spring Boot real configs
+**/application.properties
+**/application.yml
+
+# Allow example configs
+!**/application-example.yml
