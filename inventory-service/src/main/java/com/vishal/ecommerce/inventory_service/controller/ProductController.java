@@ -4,8 +4,11 @@ import com.vishal.ecommerce.inventory_service.dto.ProductDto;
 import com.vishal.ecommerce.inventory_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -16,6 +19,18 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final DiscoveryClient discoveryClient;
+    private final RestClient restClient;
+
+    @GetMapping("/fetchOrders")
+    public String fetchFromOrderService() {
+        ServiceInstance orderService = discoveryClient.getInstances("order-service").getFirst();
+
+        return restClient.get()
+                .uri(orderService.getUri()+"/api/v1/orders/helloOrders")
+                .retrieve()
+                .body(String.class);
+    }
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllInventory() {
