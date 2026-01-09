@@ -6,6 +6,9 @@ import com.vishal.ecommerce.order_service.entity.OrderItem;
 import com.vishal.ecommerce.order_service.entity.OrderStatus;
 import com.vishal.ecommerce.order_service.entity.Orders;
 import com.vishal.ecommerce.order_service.repository.OrdersRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -38,7 +41,12 @@ public class OrdersService {
         return modelMapper.map(orders, OrdersRequestDto.class);
     }
 
+
+//    @Retry(name = "inventoryRetry", fallbackMethod = "createOrderFallback")
+//    @RateLimiter(name = "inventoryRateLimiter", fallbackMethod = "createOrderFallback")
+    @CircuitBreaker(name = "inventoryCircuitBreaker", fallbackMethod = "createOrderFallback")
     public OrdersRequestDto createOrder(OrdersRequestDto ordersRequestDto) {
+        log.info("Calling the createOrder method");
         Double totalPrice = inventoryOpenFeignClient.reduceStock(ordersRequestDto);
 
         Orders orders = modelMapper.map(ordersRequestDto, Orders.class);
@@ -52,6 +60,12 @@ public class OrdersService {
         Orders savedOrder = ordersRepository.save(orders);
 
         return modelMapper.map(savedOrder, OrdersRequestDto.class);
+    }
+
+    public OrdersRequestDto createOrderFallback(OrdersRequestDto ordersRequestDto, Throwable throwable) {
+        log.error("Fallback occurred deu to : {}", throwable.getMessage() );
+
+        return new  OrdersRequestDto();
     }
 }
 
