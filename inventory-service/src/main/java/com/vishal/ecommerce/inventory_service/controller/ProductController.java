@@ -1,5 +1,7 @@
 package com.vishal.ecommerce.inventory_service.controller;
 
+import com.vishal.ecommerce.inventory_service.client.OrdersFeignClient;
+import com.vishal.ecommerce.inventory_service.dto.OrderRequestDto;
 import com.vishal.ecommerce.inventory_service.dto.ProductDto;
 import com.vishal.ecommerce.inventory_service.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,18 +24,21 @@ public class ProductController {
     private final ProductService productService;
     private final DiscoveryClient discoveryClient;
     private final RestClient restClient;
+    private final OrdersFeignClient ordersFeignClient;
 
     @GetMapping("/fetchOrders")
     public String fetchFromOrderService(HttpServletRequest httpServletRequest) {
 
         log.info(httpServletRequest.getHeader("x-custom-header"));
 
-        ServiceInstance orderService = discoveryClient.getInstances("order-service").getFirst();
+//        ServiceInstance orderService = discoveryClient.getInstances("order-service").getFirst();
 
-        return restClient.get()
-                .uri(orderService.getUri()+"/orders/core/helloOrders")
-                .retrieve()
-                .body(String.class);
+//        return restClient.get()
+//                .uri(orderService.getUri()+"/orders/core/helloOrders")
+//                .retrieve()
+//                .body(String.class);
+
+        return ordersFeignClient.helloOrders();
     }
 
     @GetMapping
@@ -47,5 +52,12 @@ public class ProductController {
     public ResponseEntity<ProductDto> getInventoryById(@PathVariable Long id) {
         ProductDto inventory = productService.getProductById(id);
         return ResponseEntity.ok(inventory);
+    }
+
+    @PutMapping("/reduce-stocks")
+    public ResponseEntity<Double> reduceStock(@RequestBody OrderRequestDto orderRequestDto) {
+        Double totalPrice = productService.reduceStock(orderRequestDto);
+        return ResponseEntity.ok(totalPrice);
+
     }
 }
