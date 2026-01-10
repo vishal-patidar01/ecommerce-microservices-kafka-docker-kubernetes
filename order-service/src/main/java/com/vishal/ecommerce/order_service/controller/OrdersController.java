@@ -1,11 +1,14 @@
 package com.vishal.ecommerce.order_service.controller;
 
 import com.vishal.ecommerce.order_service.client.InventoryOpenFeignClient;
+import com.vishal.ecommerce.order_service.config.FeaturesEnableConfig;
 import com.vishal.ecommerce.order_service.dto.OrdersRequestDto;
 import com.vishal.ecommerce.order_service.service.OrdersService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +18,25 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RefreshScope
 @RequestMapping("/core")
 public class OrdersController {
 
     private final OrdersService ordersService;
 
+    @Value("${my.variable}")
+    private String myVariable;
+    
+    private final FeaturesEnableConfig featuresEnableConfig;
+
     @GetMapping("/helloOrders")
-    public String helloOrders(@RequestHeader("X-User-Id") Long userId) {
-        return "Hello from orders service, user id is :"+userId;
+    public String helloOrders() {
+
+        if(featuresEnableConfig.isUserTrackingEnabled()) {
+            return "User tracking enabled wohoo, my variable is: "+myVariable;
+        }else {
+            return "User tracking disabled awww, my variable is: "+myVariable;
+        }
     }
 
     @PostMapping("/create-orders")
