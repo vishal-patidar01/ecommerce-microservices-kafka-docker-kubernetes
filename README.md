@@ -42,6 +42,43 @@ and communicates using REST APIs and service discovery.
 
 ---
 
+
+---
+
+## 🐳 Docker & Containerization
+
+This project uses **Docker** to containerize all microservices and infrastructure
+components, ensuring consistency across development and deployment environments.
+
+Each microservice runs inside its own isolated Docker container and communicates
+with other services over a Docker network using service discovery.
+
+### 🔹 Docker Usage in This Project
+- Separate `Dockerfile` for each microservice
+- JAR-based Spring Boot containers
+- Centralized orchestration using `docker-compose`
+- Infrastructure services (PostgreSQL, Zipkin, ELK) run as containers
+- Service-to-service communication via container names
+
+### 🧩 Dockerized Components
+- API Gateway
+- Config Server
+- Discovery Service (Eureka)
+- Inventory Service
+- Order Service
+- PostgreSQL Databases
+- Zipkin (Distributed Tracing)
+- ELK Stack (Elasticsearch, Logstash, Kibana)
+
+### ▶️ Run Project Using Docker
+
+Start all services:
+```bash
+   docker-compose up -d
+```
+
+---
+
 ## 🧩 Microservices
 
 ### 🔹 API Gateway
@@ -64,14 +101,12 @@ Each microservice loads its configuration from the Config Server at startup.
 - `application.yml` → ignored via `.gitignore` (contains real credentials)
 
 
-
 ### 🔹 Discovery Service
 - Netflix Eureka Server
 - Registers and discovers all microservices
 
 📸 Screenshot:
 ![Eureka Dashboard](docs/screenshots/eureka-dashboard.png)
-
 
 ### 🔹 Inventory Service
 - Manages product inventory
@@ -82,7 +117,7 @@ Each microservice loads its configuration from the Config Server at startup.
 - Handles order creation and management
 - Communicates with Inventory Service
 - Uses PostgreSQL / MySQL
-
+- 
 ---
 
 ## 🌐 API Endpoints (via API Gateway)
@@ -165,7 +200,7 @@ Each service provides an example configuration file:
 - [x] Inventory Service
 - [x] Order Service
 - [ ] Kafka Integration
-- [ ] Docker Compose
+- [x] Docker Compose
 - [ ] Kubernetes Deployment
 - [x] Centralized Logging & Monitoring
 
