@@ -1,4 +1,6 @@
-# ecommerce-microservices-kafka-docker-kubernetes
+# 🚀 Ecommerce Microservices Platform 
+     **Spring Boot | Kafka | Docker | Kubernetes**
+
 
 ## 📌 Overview
 
@@ -9,22 +11,32 @@ event-driven architecture, containerization, and Kubernetes deployment.
 The goal of this project is **learning and practicing real-world microservices architecture
 with professional Git workflow**.
 
+The project focuses on:
+- Service Discovery & API Gateway
+- Event-driven architecture
+- Centralized configuration & logging
+- Containerization with Docker
+- Kubernetes deployment (Minikube)
+
+![Microservices Architecture](docs/screenshots/Linkedin-microservice.png)
+
+> 🎯 Purpose: **Learning & hands-on practice** of production-grade microservices with a clean Git workflow.
+
 ---
 
 ## 🧱 Tech Stack
 
-- Java 17
-- Spring Boot
-- Spring Cloud
-- Netflix Eureka
-- Spring Cloud API Gateway
-- Apache Kafka (planned)
-- Docker
-- Kubernetes (Minikube)
-- PostgreSQL / MySQL
-- Elasticsearch
-- Logstash
-- Kibana
+- **Java 17**
+- **Spring Boot**
+- **Spring Cloud**
+    - Eureka (Service Discovery)
+    - API Gateway
+    - Config Server
+- **Apache Kafka** (event-driven communication)
+- **Docker & Docker Compose**
+- **Kubernetes (Minikube)**
+- **PostgreSQL / MySQL**
+- **ELK Stack** (Elasticsearch, Logstash, Kibana)
 
 ---
 
@@ -38,10 +50,7 @@ and communicates using REST APIs and service discovery.
 - Spring Cloud API Gateway as a single entry point
 - Independent microservices with separate databases
 - ELK Stack for centralized logging & monitoring
-- (Planned) Kafka for event-driven communication
-
----
-
+- Kafka for event-driven communication
 
 ---
 
@@ -76,9 +85,70 @@ Start all services:
 ```bash
    docker-compose up -d
 ```
+---
+## 📦 Kubernetes Infrastructure (k8s)
+
+This project uses **Kubernetes (Minikube)** to run supporting infrastructure services in a production-like local environment.
+
+All Kubernetes manifests are located inside the `k8s/` directory.
+
+### 📁 Directory Structure
+```
+k8s/
+├── order-db.yml
+├── inventory-db.yml
+└── zipkin.yml
+```
+
+## 🗄️ Databases (PostgreSQL)
+
+Each microservice follows the **Database Per Service** pattern.
+
+### 🟢 Order Database (`order-db.yml`)
+- PostgreSQL database for **order-service**
+- Deployed using **StatefulSet**
+- Uses **PersistentVolumeClaim (PVC)** for data persistence
+- Exposed via **Headless Service** for stable DNS
+
+**Service DNS (inside Kubernetes):**
+
+    order-db-0.order-db-service
+
+### 🟢 Inventory Database (`inventory-db.yml`)
+- PostgreSQL database for **inventory-service**
+- Deployed using **StatefulSet**
+- Uses **PersistentVolumeClaim (PVC)** for persistent storage
+- Exposed via **Headless Service**
+
+**Service DNS (inside Kubernetes):**
+
+    inventory-db-0.inventory-db-service
 
 ---
 
+## 📊 Distributed Tracing
+
+### 🟣 Zipkin (`zipkin.yml`)
+- Used for **distributed tracing**
+- Helps track request flow across microservices
+- Useful for debugging latency and failures in a microservices system
+
+## 🚀 Deploying Infrastructure
+
+From the project root directory:
+
+```bash
+cd k8s
+kubectl apply -f order-db.yml
+kubectl apply -f inventory-db.yml
+kubectl apply -f zipkin.yml
+```
+
+Verify deployment:
+
+    kubectl get pods 
+    kubectl get pvc
+---
 ## 🧩 Microservices
 
 ### 🔹 API Gateway
