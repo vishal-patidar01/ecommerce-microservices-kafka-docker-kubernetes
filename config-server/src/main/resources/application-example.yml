@@ -1,0 +1,18 @@
+spring.application.name: config-server
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: URL
+          username: GITHUB_USERNAME
+          password: GITHUB_TOKEN
+          default-label: ----
+
+server:
+  port: 8888
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
