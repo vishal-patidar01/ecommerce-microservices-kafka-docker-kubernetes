@@ -271,7 +271,7 @@ Each service provides an example configuration file:
 - [x] Order Service
 - [ ] Kafka Integration
 - [x] Docker Compose
-- [ ] Kubernetes Deployment
+- [x] Kubernetes Deployment(Minikube)
 - [x] Centralized Logging & Monitoring
 
 ---
